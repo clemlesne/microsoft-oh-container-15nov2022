@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Swashbuckle.AspNetCore.Swagger;
-using System.Reflection;
+using Newtonsoft.Json;
 using poi.Data;
 using poi.Utility;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Rewrite;
 using Prometheus;
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace poi
 {
@@ -33,10 +34,11 @@ namespace poi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
+            services.AddControllersWithViews()
                 .AddJsonOptions(options =>
                 {
-                    options.SerializerSettings.Formatting = Formatting.Indented;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
                 });
 
             var connectionString = poi.Utility.POIConfiguration.GetConnectionString(this.Configuration);
@@ -46,7 +48,8 @@ namespace poi
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("docs", new Info { Title = "Trip Insights Points Of Interest (POI) API", Description = "API for the trips in the Trip Insights app. https://github.com/Azure-Samples/openhack-containers", Version = "v1" });
+                // TODO: Build error "The type or namespace name 'Info' could not be found after migration from Swashbuckle v3 to v5"
+                // c.SwaggerDoc("docs", new Info { Title = "Trip Insights Points Of Interest (POI) API", Description = "API for the trips in the Trip Insights app. https://github.com/Azure-Samples/openhack-containers", Version = "v1" });
             });
         }
 
@@ -60,11 +63,10 @@ namespace poi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }else{
                 // https://github.com/prometheus-net/prometheus-net#aspnet-core-http-request-metrics
-                // "You should use either UseExceptionHandler() or a custom exception handler middleware. 
-                // prometheus-net cannot see what the web host's default exception handler does and may report 
+                // "You should use either UseExceptionHandler() or a custom exception handler middleware.
+                // prometheus-net cannot see what the web host's default exception handler does and may report
                 // the wrong HTTP status code for exceptions (e.g. 200 instead of 500)."
                 app.UseExceptionHandler(a => a.Run(async context =>
                 {
@@ -97,7 +99,14 @@ namespace poi
                 c.RoutePrefix = "api/docs/poi";
             });
 
-            app.UseMvc();
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseCors();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

@@ -1,5 +1,5 @@
 # builder - first stage to build the application
-FROM maven:3.5.4-jdk-11-slim AS build-env
+FROM maven:3.8-eclipse-temurin-11 AS build-env
 ADD ./pom.xml pom.xml
 ADD ./src src/
 RUN mvn clean package

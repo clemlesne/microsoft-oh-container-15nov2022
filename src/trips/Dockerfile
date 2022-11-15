@@ -1,5 +1,5 @@
 # builder - first stage to build the application
-FROM golang:1.17.1 AS gobuild
+FROM golang:1.19 AS gobuild
 
 WORKDIR /go/src/app
 COPY . .
@@ -9,7 +9,7 @@ RUN go get
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
 # runtime - build final runtime image
-FROM alpine:3.10 AS gorun
+FROM alpine:3.16 AS gorun
 
 ARG IMAGE_CREATE_DATE
 ARG IMAGE_VERSION
