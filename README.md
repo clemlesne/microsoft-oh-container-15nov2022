@@ -19,7 +19,7 @@ The application used for this event is a heavily modified and recreated version 
 ### Build
 
 ```bash
-docker-compose -f src/docker-compose.yaml build
+docker-compose -f src/docker-compose.yaml build --build-arg IMAGE_CREATE_DATE="`date -u +"%Y-%m-%dT%H:%M:%SZ"`" --build-arg IMAGE_SOURCE_REVISION="`git rev-parse HEAD`" --build-arg IMAGE_VERSION="`git describe --tags --abbrev=0`"
 ```
 
 ### Run locally
