@@ -19,16 +19,16 @@ ENV PORT=80 \
 
 # Metadata as defined in OCI image spec annotations - https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL org.opencontainers.image.title="Trip Insights - User (Java) API" \
-      org.opencontainers.image.description="The User (Java) API component forms part of the Trip Insights application." \
-      org.opencontainers.image.created=$IMAGE_CREATE_DATE \
-      org.opencontainers.image.version=$IMAGE_VERSION \
-      org.opencontainers.image.authors="Microsoft" \
-      org.opencontainers.image.url="https://github.com/Azure-Samples/openhack-containers/blob/master/dockerfiles/Dockerfile_0" \
-      org.opencontainers.image.documentation="https://github.com/Azure-Samples/openhack-containers/blob/master/src/user-java/README.md" \
-      org.opencontainers.image.vendor="Microsoft" \
-      org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.source="https://github.com/Azure-Samples/openhack-containers.git" \
-      org.opencontainers.image.revision=$IMAGE_SOURCE_REVISION 
+    org.opencontainers.image.description="The User (Java) API component forms part of the Trip Insights application." \
+    org.opencontainers.image.created=$IMAGE_CREATE_DATE \
+    org.opencontainers.image.version=$IMAGE_VERSION \
+    org.opencontainers.image.authors="Microsoft" \
+    org.opencontainers.image.url="https://github.com/Azure-Samples/openhack-containers/blob/master/dockerfiles/Dockerfile_0" \
+    org.opencontainers.image.documentation="https://github.com/Azure-Samples/openhack-containers/blob/master/src/user-java/README.md" \
+    org.opencontainers.image.vendor="Microsoft" \
+    org.opencontainers.image.licenses="MIT" \
+    org.opencontainers.image.source="https://github.com/Azure-Samples/openhack-containers.git" \
+    org.opencontainers.image.revision=$IMAGE_SOURCE_REVISION
 
 # add debugging utilities
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -37,7 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     less \
     vim \
-	&& rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
 # add the application's jar to the container
 COPY --from=build-env target/swagger-spring-1.0.0.jar app.jar
