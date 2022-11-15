@@ -1,6 +1,8 @@
 # Containers 2.0 Openhack
 
-<!-- 
+
+
+<!--
 Guidelines on README format: https://review.docs.microsoft.com/help/onboard/admin/samples/concepts/readme-template?branch=master
 
 Guidance on onboarding samples to docs.microsoft.com/samples: https://review.docs.microsoft.com/help/onboard/admin/samples/process/onboarding?branch=master
@@ -11,6 +13,35 @@ Taxonomies for products and languages: https://review.docs.microsoft.com/new-hop
 This repo houses the source code and dockerfiles for the Containers OpenHack event.
 
 The application used for this event is a heavily modified and recreated version of the original [My Driving application](https://github.com/Azure-Samples/MyDriving).
+
+## Development
+
+### Build
+
+```bash
+docker-compose -f src/docker-compose.yaml build --build-arg IMAGE_CREATE_DATE="`date -u +"%Y-%m-%dT%H:%M:%SZ"`" --build-arg IMAGE_SOURCE_REVISION="`git rev-parse HEAD`" --build-arg IMAGE_VERSION="`git describe --tags --abbrev=0`"
+```
+
+### Run locally
+
+```bash
+# Deploy
+docker-compose -f src/docker-compose.yaml up -d
+# See logs
+docker-compose -f src/docker-compose.yaml logs -f
+```
+
+### Push to Azure Container Registry (ACR)
+
+```bash
+# Login to Azure
+az login
+az account set --subscription abfe0518-15b0-4905-95f9-8a7002dbfec1
+# Login local docker environment to the remote container registry
+az acr login -n registrykar3457
+# Push
+docker-compose -f src/docker-compose.yaml push
+```
 
 ## Contents
 

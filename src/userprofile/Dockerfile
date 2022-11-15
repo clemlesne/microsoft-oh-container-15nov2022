@@ -17,12 +17,12 @@ LABEL org.opencontainers.image.title="Trip Insights - User Profile API" \
       org.opencontainers.image.created=$IMAGE_CREATE_DATE \
       org.opencontainers.image.version=$IMAGE_VERSION \
       org.opencontainers.image.authors="Microsoft" \
-      org.opencontainers.image.url="https://github.com/Azure-Samples/openhack-containers/blob/master/dockerfiles/Dockerfile_2" \
-      org.opencontainers.image.documentation="https://github.com/Azure-Samples/openhack-containers/blob/master/src/userprofile/README.md" \
+      org.opencontainers.image.url="https://github.com/clemlesne/microsoft-oh-container-15nov2022/blob/master/dockerfiles/Dockerfile_2" \
+      org.opencontainers.image.documentation="https://github.com/clemlesne/microsoft-oh-container-15nov2022/blob/master/src/userprofile/README.md" \
       org.opencontainers.image.vendor="Microsoft" \
       org.opencontainers.image.licenses="MIT" \
-      org.opencontainers.image.source="https://github.com/Azure-Samples/openhack-containers.git" \
-      org.opencontainers.image.revision=$IMAGE_SOURCE_REVISION 
+      org.opencontainers.image.source="https://github.com/clemlesne/microsoft-oh-container-15nov2022.git" \
+      org.opencontainers.image.revision=$IMAGE_SOURCE_REVISION
 
 # add debugging utilities
 RUN apk --no-cache add \
@@ -32,7 +32,7 @@ RUN apk --no-cache add \
   less \
   vim
 
-# bundle app and install dependencies 
+# bundle app and install dependencies
 COPY . /app
 WORKDIR /app
 RUN npm install
