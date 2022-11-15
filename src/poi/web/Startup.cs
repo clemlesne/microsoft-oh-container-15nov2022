@@ -49,7 +49,7 @@ namespace poi
             services.AddSwaggerGen(c =>
             {
                 // TODO: Build error "The type or namespace name 'Info' could not be found after migration from Swashbuckle v3 to v5"
-                // c.SwaggerDoc("docs", new Info { Title = "Trip Insights Points Of Interest (POI) API", Description = "API for the trips in the Trip Insights app. https://github.com/Azure-Samples/openhack-containers", Version = "v1" });
+                // c.SwaggerDoc("docs", new Info { Title = "Trip Insights Points Of Interest (POI) API", Description = "API for the trips in the Trip Insights app. https://github.com/clemlesne/microsoft-oh-container-15nov2022", Version = "v1" });
             });
         }
 
