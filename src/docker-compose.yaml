@@ -1,0 +1,101 @@
+version: "2"
+
+services:
+  poi:
+    build: poi
+    image: registrykar3457.azurecr.io/poi
+    ports:
+      - 8001:80
+    networks:
+      - back-tier
+    environment:
+      - SQL_USER=SA
+      - SQL_PASSWORD=Password1234_
+      - SQL_SERVER=database
+      - SQL_DBNAME=master
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - dataload
+  trips-api:
+    build: trips
+    image: registrykar3457.azurecr.io/trips-api
+    ports:
+      - 8002:80
+    networks:
+      - back-tier
+    environment:
+      - SQL_USER=SA
+      - SQL_PASSWORD=Password1234_
+      - SQL_SERVER=database
+      - SQL_DBNAME=master
+      - OPENAPI_DOCS_URI=http://0.0.0.0:8002
+    depends_on:
+      - dataload
+  trips-viewer:
+    build: tripviewer
+    image: registrykar3457.azurecr.io/trips-viewer
+    ports:
+      - 8003:80
+    networks:
+      - front-tier
+      - back-tier
+    environment:
+      - USERPROFILE_API_ENDPOINT=profiles-api:8005
+      - TRIPS_API_ENDPOINT=trips-api:8002
+    depends_on:
+      - trips-api
+      - profiles-api
+  users-api:
+    build: user-java
+    image: registrykar3457.azurecr.io/users-api
+    ports:
+      - 8004:80
+    networks:
+      - back-tier
+    environment:
+      - SQL_USER=SA
+      - SQL_PASSWORD=Password1234_
+      - SQL_SERVER=database
+      - SQL_DBNAME=master
+    depends_on:
+      - dataload
+  profiles-api:
+    build: userprofile
+    image: registrykar3457.azurecr.io/profiles-api
+    ports:
+      - 8005:80
+    networks:
+      - back-tier
+    environment:
+      - SQL_USER=SA
+      - SQL_PASSWORD=Password1234_
+      - SQL_SERVER=database
+      - SQL_DBNAME=master
+    depends_on:
+      - dataload
+  dataload:
+    image: registrykar3457.azurecr.io/dataload:1.0
+    networks:
+      - back-tier
+    environment:
+      - SQLUSER=SA
+      - SQLPASS=Password1234_
+      - SQLDB=master
+      - SQLFQDN=database
+    depends_on:
+      - database
+  database:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    ports:
+      - 1433:1433
+    networks:
+      - back-tier
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password1234_
+
+networks:
+  front-tier:
+    driver: bridge
+  back-tier:
+    driver: bridge
