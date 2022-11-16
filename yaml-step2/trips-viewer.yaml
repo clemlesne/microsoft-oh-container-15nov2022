@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trips-viewer-deployment
+  labels:
+    app: trips-viewer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: trips-viewer
+  template:
+    metadata:
+      labels:
+        app: trips-viewer
+    spec:
+      containers:
+      - name: trips-viewer
+        image: registrykar3457.azurecr.io/trips-viewer:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: USERPROFILE_API_ENDPOINT
+          value: http://profile-service
+        - name: TRIPS_API_ENDPOINT
+          value: http://trips-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trips-viewer-service
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: trips-viewer
