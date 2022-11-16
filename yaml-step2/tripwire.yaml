@@ -1,0 +1,21 @@
+apiVersion: trips-viewer/v1
+kind: Deployment
+metadata:
+  name: trips-viewer-deployment
+  labels:
+    app: trips-viewer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: trips-viewer
+  template:
+    metadata:
+      labels:
+        app: trips-viewer
+    spec:
+      containers:
+      - name: registrykar3457.azurecr.io/trips-viewer:latest
+        image: trips-viewer
+        ports:
+        - containerPort: 80
