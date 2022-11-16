@@ -1,9 +1,9 @@
 version: "2"
 
 services:
-  poi:
+  poi-api:
     build: poi
-    image: registrykar3457.azurecr.io/poi
+    image: registrykar3457.azurecr.io/poi-api
     ports:
       - 8001:80
     networks:
