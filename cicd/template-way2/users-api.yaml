@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-api-deployment
+  labels:
+    app: users-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: users-api
+  template:
+    metadata:
+      labels:
+        app: users-api
+    spec:
+      containers:
+      - name: users-api
+        image: registrykar3457.azurecr.io/users-api:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: SQL_USER
+          valueFrom:   
+            secretKeyRef:   
+              name: db-connection  
+              key: SQL_USER
+        - name: SQL_PASSWORD
+          valueFrom:   
+            secretKeyRef:   
+              name: db-connection  
+              key: SQL_PASSWORD
+        - name: SQL_SERVER
+          valueFrom:   
+            secretKeyRef:   
+              name: db-connection  
+              key: SQL_SERVER
+        - name: SQL_DBNAME
+          valueFrom:   
+            secretKeyRef:   
+              name: db-connection  
+              key: SQL_DBNAME
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-service
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: users-api

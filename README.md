@@ -56,6 +56,15 @@ az ad sp create-for-rbac --name "github-actions" --role contributor --scopes /su
 # Store the output to a GitHub Actions secret variable named "AZURE_CREDS"
 ```
 
+### Deploy yo Kubernetes
+
+```bash
+# Login local kubectl environment to the remote Kubernetes cluster
+az aks get-credentials --resource-group teamResources --name humongous_team_cluster
+# Install the app
+kubectl apply -f ./cicd/templates-way1/
+```
+
 ## Contents
 
 | File/folder       | Description                                |
