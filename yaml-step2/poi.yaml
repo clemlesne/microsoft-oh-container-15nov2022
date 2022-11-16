@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poi-api-deployment
+  labels:
+    app: poi-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: poi-api
+  template:
+    metadata:
+      labels:
+        app: poi-api
+    spec:
+      containers:
+      - name: poi-api
+        image: registrykar3457.azurecr.io/poi-api:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: SQL_USER
+          valueFrom:   
+            secretKeyRef:   
+              name: db-connection  
+              key: SQL_USER
+        - name: SQL_PASSWORD
+          valueFrom:   
+            secretKeyRef:   
+              name: db-connection  
+              key: SQL_PASSWORD
+        - name: SQL_SERVER
+          valueFrom:   
+            secretKeyRef:   
+              name: db-connection  
+              key: SQL_SERVER
+        - name: SQL_DBNAME
+          valueFrom:   
+            secretKeyRef:   
+              name: db-connection  
+              key: SQL_DBNAME
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: poi-service
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: poi-api
