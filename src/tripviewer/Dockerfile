@@ -1,7 +1,7 @@
 #
 # builder - first stage to build the application
 #
-FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:2.1 AS build-env
 WORKDIR /src
 
 COPY . .
@@ -12,7 +12,7 @@ RUN dotnet publish "web/TripViewer.csproj" -c Release -o /publish
 #
 # runtime - build final runtime image
 #
-FROM mcr.microsoft.com/dotnet/aspnet:3.1-alpine
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.1-alpine
 
 ARG IMAGE_CREATE_DATE
 ARG IMAGE_VERSION
