@@ -62,7 +62,7 @@ az ad sp create-for-rbac --name "github-actions" --role contributor --scopes /su
 # Login local kubectl environment to the remote Kubernetes cluster
 az aks get-credentials --resource-group teamResources --name humongous_team_cluster
 # Install the app
-kubectl apply -f ./cicd/templates/
+kubectl apply -f ./cicd/templates-way1/
 ```
 
 ## Contents
