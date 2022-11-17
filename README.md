@@ -59,12 +59,19 @@ az ad sp create-for-rbac --name "github-actions" --role contributor --scopes /su
 ### Setup Azure Kubernetes Cluster
 
 ```bash
-# Make sure RBAC is enable for the AKS instance
+# Make sure RBAC is enabled
 az aks update --resource-group teamResources --name humongous_team_cluster --enable-aad --enable-azure-rbac --disable-local-accounts
-# Store the resource ID
-AKS_ID=$(az aks show --resource-group teamResources --name humongous_team_cluster --query id -o tsv)
 # Assign yourself to the admin group
+AKS_ID=$(az aks show --resource-group teamResources --name humongous_team_cluster --query id -o tsv)
 az role assignment create --role "Azure Kubernetes Service RBAC Cluster Admin" --assignee [AAD account ID] --scope $AKS_ID
+
+# Make sure there is ony public IP attached to the cluster
+az aks update --resource-group teamResources --name humongous_team_cluster --load-balancer-managed-outbound-ip-count 1
+
+# Install the NGINX Ingress
+helm repo add nginx-stable https://helm.nginx.com/stable
+helm repo update
+helm upgrade ingress nginx-stable/nginx-ingress --install --atomic -f ./cicd/nginx-ingress.yaml
 ```
 
 ### Deploy yo Kubernetes

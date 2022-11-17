@@ -56,7 +56,7 @@ spec:
                   key: password
                   optional: false
             - name: SQL_SERVER
-              value: mydriving-database-0.mydriving-database.default.svc.cluster.local
+              value: mydriving-database-0.mydriving-database.mydriving-api.svc.cluster.local
             - name: SQL_USER
               valueFrom:
                 secretKeyRef:
