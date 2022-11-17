@@ -1,0 +1,60 @@
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: mydriving-read-write
+  namespace: mydriving-api
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: mydriving-read-write
+subjects:
+- kind: Group
+  namespace: mydriving-api
+  # AAD web-api
+  name: 713fa98c-af79-4784-a26f-2d50acdb74f5
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: mydriving-read-only
+  namespace: mydriving-api
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: mydriving-read-only
+subjects:
+- kind: Group
+  namespace: mydriving-web
+  # AAD web-api
+  name: 713fa98c-af79-4784-a26f-2d50acdb74f5
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: mydriving-read-write
+  namespace: mydriving-web
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: mydriving-read-write
+subjects:
+- kind: Group
+  namespace: mydriving-web
+  # AAD web-dev
+  name: 800aa2a3-92b4-469c-b631-9a16c95892a5
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: mydriving-read-only
+  namespace: mydriving-web
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: mydriving-read-only
+subjects:
+- kind: Group
+  namespace: mydriving-api
+  # AAD web-dev
+  name: 800aa2a3-92b4-469c-b631-9a16c95892a5

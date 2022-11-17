@@ -56,6 +56,17 @@ az ad sp create-for-rbac --name "github-actions" --role contributor --scopes /su
 # Store the output to a GitHub Actions secret variable named "AZURE_CREDS"
 ```
 
+### Setup Azure Kubernetes Cluster
+
+```bash
+# Make sure RBAC is enable for the AKS instance
+az aks update --resource-group teamResources --name humongous_team_cluster --enable-aad --enable-azure-rbac --disable-local-accounts
+# Store the resource ID
+AKS_ID=$(az aks show --resource-group teamResources --name humongous_team_cluster --query id -o tsv)
+# Assign yourself to the admin group
+az role assignment create --role "Azure Kubernetes Service RBAC Cluster Admin" --assignee [AAD account ID] --scope $AKS_ID
+```
+
 ### Deploy yo Kubernetes
 
 ```bash

@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/component: database
     app.kubernetes.io/name: mydriving
   name: mydriving-database-secret
-  namespace: default
+  namespace: mydriving-api
 stringData:
   database: master
   password: Password1234_
@@ -20,7 +20,7 @@ metadata:
     app.kubernetes.io/component: database
     app.kubernetes.io/name: mydriving
   name: mydriving-database
-  namespace: default
+  namespace: mydriving-api
 spec:
   ports:
     - name: database
@@ -38,7 +38,7 @@ metadata:
     app.kubernetes.io/component: database
     app.kubernetes.io/name: mydriving
   name: mydriving-database
-  namespace: default
+  namespace: mydriving-api
 spec:
   selector:
     matchLabels:

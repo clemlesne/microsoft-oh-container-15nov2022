@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/component: poi-api
     app.kubernetes.io/name: mydriving
   name: mydriving-poi-api
-  namespace: default
+  namespace: mydriving-api
 spec:
   ports:
     - name: http
@@ -24,7 +24,7 @@ metadata:
     app.kubernetes.io/component: poi-api
     app.kubernetes.io/name: mydriving
   name: mydriving-poi-api
-  namespace: default
+  namespace: mydriving-api
 spec:
   selector:
     matchLabels:
