@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/component: trips-viewer
     app.kubernetes.io/name: mydriving
   name: mydriving-trips-viewer
-  namespace: default
+  namespace: mydriving-web
 spec:
   ports:
     - name: http
@@ -25,7 +25,7 @@ metadata:
     app.kubernetes.io/component: trips-viewer
     app.kubernetes.io/name: mydriving
   name: mydriving-trips-viewer
-  namespace: default
+  namespace: mydriving-web
 spec:
   selector:
     matchLabels:

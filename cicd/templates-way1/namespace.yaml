@@ -4,4 +4,11 @@ kind: Namespace
 metadata:
   labels:
     app.kubernetes.io/name: mydriving
-  name: default
+  name: mydriving-api
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app.kubernetes.io/name: mydriving
+  name: mydriving-web

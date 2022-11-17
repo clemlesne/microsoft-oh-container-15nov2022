@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/component: dataload
     app.kubernetes.io/name: mydriving
   name: mydriving-dataload
-  namespace: default
+  namespace: mydriving-api
 spec:
   selector:
     matchLabels:
