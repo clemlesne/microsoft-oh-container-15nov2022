@@ -43,26 +43,8 @@ spec:
         - env:
             - name: ASPNETCORE_ENVIRONMENT
               value: Production
-            - name: SQL_DBNAME
-              valueFrom:
-                secretKeyRef:
-                  name: mydriving-database-secret
-                  key: database
-                  optional: false
-            - name: SQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mydriving-database-secret
-                  key: password
-                  optional: false
-            - name: SQL_SERVER
-              value: mydriving-database-0.mydriving-database.default.svc.cluster.local
-            - name: SQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mydriving-database-secret
-                  key: username
-                  optional: false
+            - name: CONFIG_FILES_PATH
+              value: /mnt/secrets-store
           image: registrykar3457.azurecr.io/poi-api:v0.1.0
           name: poi-api
           ports:
@@ -82,4 +64,15 @@ spec:
             limits:
               memory: 512Mi
               cpu: "0.5"
+          volumeMounts:
+            - name: secrets-store01-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+      volumes:
+        - name: secrets-store01-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "azure-kvname-user-msi"      
       restartPolicy: Always
