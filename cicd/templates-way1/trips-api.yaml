@@ -41,12 +41,30 @@ spec:
     spec:
       containers:
         - env:
-          - name: CONFIG_FILES_PATH
-            value: /mnt/secrets-store
+            - name: SQL_DBNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mydriving-database-secret
+                  key: database
+                  optional: false
+            - name: SQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mydriving-database-secret
+                  key: password
+                  optional: false
+            - name: SQL_SERVER
+              value: mydriving-database-0.mydriving-database.mydriving-api.svc.cluster.local
+            - name: SQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mydriving-database-secret
+                  key: username
+                  optional: false
           volumeMounts:
             - name: secrets-store01-inline
-              mountPath: "/mnt/secrets-store"
               readOnly: true
+              mountPath: "/mnt/secrets-store"
           image: registrykar3457.azurecr.io/trips-api:v0.1.0
           name: trips-api
           ports:

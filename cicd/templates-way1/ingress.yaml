@@ -1,0 +1,84 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/name: ingress-redronjoatio
+  annotations:
+    nginx.org/mergeable-ingress-type: "master"
+  name: ingress-redronjoatio
+  namespace: default
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: ["redronjoatio.northeurope.cloudapp.azure.com"]
+      secretName: ingress-redronjoatio-tls
+  rules:
+    - host: redronjoatio.northeurope.cloudapp.azure.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/name: mydriving
+  annotations:
+    nginx.org/mergeable-ingress-type: "minion"
+  name: mydriving-api
+  namespace: mydriving-api
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: redronjoatio.northeurope.cloudapp.azure.com
+      http:
+        paths:
+          - path: /api/poi
+            pathType: Prefix
+            backend:
+              service:
+                name: mydriving-poi-api
+                port:
+                  number: 8080
+          - path: /api/user
+            pathType: Prefix
+            backend:
+              service:
+                name: mydriving-profiles-api
+                port:
+                  number: 8080
+          - path: /api/trips
+            pathType: Prefix
+            backend:
+              service:
+                name: mydriving-trips-api
+                port:
+                  number: 8080
+          - path: /api/user-java
+            pathType: Prefix
+            backend:
+              service:
+                name: mydriving-users-api
+                port:
+                  number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/name: mydriving
+  annotations:
+    nginx.org/mergeable-ingress-type: "minion"
+  name: mydriving-web
+  namespace: mydriving-web
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: redronjoatio.northeurope.cloudapp.azure.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mydriving-trips-viewer
+                port:
+                  number: 8080
